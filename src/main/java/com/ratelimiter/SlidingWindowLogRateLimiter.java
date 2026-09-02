@@ -30,6 +30,8 @@ public class SlidingWindowLogRateLimiter {
         else {
             // Reject the request if the limit is reached
             System.out.println("Request rejected. Limit reached for the current window.");
+            StringBuilder stringBuilder = new StringBuilder();
+
             return false;
         }
 

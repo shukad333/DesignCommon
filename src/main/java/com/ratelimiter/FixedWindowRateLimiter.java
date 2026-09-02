@@ -23,6 +23,29 @@ public class FixedWindowRateLimiter {
         this.windowStartTime = System.currentTimeMillis();
     }
 
+    public synchronized boolean allow() {
+
+        long current = System.currentTimeMillis();
+
+        if(current - windowStartTime >= windowDurationMs) {
+            //reset
+            windowStartTime = current;
+            requestCount.set(0);
+            System.out.println("Reset window");
+        }
+
+        if(requestCount.get() < maxRequests) {
+            System.out.println("Allowing");
+            requestCount.getAndIncrement();
+            return true;
+        }
+        else {
+            System.out.println("Sorry!");
+            return false;
+        }
+
+    }
+
     // Method to check if a request is allowed
     public synchronized boolean allowRequest() {
         long currentTime = System.currentTimeMillis();
